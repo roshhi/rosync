@@ -39,6 +39,8 @@ model File {
   size      Int
   mimeType  String
   url       String
+  publicId  String 
+  resourceType String
 
   folderId  Int?
   folder    Folder?  @relation(fields: [folderId], references: [id])
@@ -52,7 +54,7 @@ model File {
 model ShareLink {
   id        String   @id @default(uuid())
   folderId  Int
-  folder    Folder   @relation(fields: [folderId], references: [id])
+  folder    Folder   @relation(fields: [folderId], references: [id], onDelete: Cascade)
 
   expiresAt DateTime
   createdAt DateTime @default(now())

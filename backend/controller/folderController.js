@@ -1,4 +1,5 @@
 import { prisma } from '../lib/prisma.js';
+import cloudinary from '../config/cloudinary.js';
 
 // Create a new folder
 export const createFolder = async (req, res) => {
@@ -211,9 +212,22 @@ export const deleteFolder = async (req, res) => {
         error: 'Folder not found'
       });
     }
+    // Delete all files in the folder from Cloudinary
+    for (const file of folder.files) {
+      try {
+        await cloudinary.uploader.destroy(file.publicId, { resource_type: file.resourceType });
+      } catch (cloudinaryError) {
+        console.error('Cloudinary deletion error (continuing):', cloudinaryError);
+      }
+    }
 
-    // TODO: Delete files from Cloudinary before deleting folder
-    // For now, just delete the folder and its relations
+    // Delete files from DB
+    await prisma.file.deleteMany({ where: { folderId: folder.id } });
+
+    // Recursively delete child folders
+    for (const child of folder.children) {
+      await deleteFolder({ ...req, params: { id: child.id } }, res);
+    }
 
     await prisma.folder.delete({
       where: { id: parseInt(id) }
