@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(cors({
-  origin: 'http://localhost:5177',
+  origin: 'https://rosync.vercel.app',
   credentials: true
 }));
 

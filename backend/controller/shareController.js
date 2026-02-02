@@ -48,7 +48,7 @@ export const createShareLink = async (req, res) => {
       message: 'Share link created successfully',
       shareLink: {
         id: shareLink.id,
-        url: `${process.env.FRONTEND_URL || 'http://localhost:5177'}/share/${shareLink.id}`,
+        url: `${process.env.FRONTEND_URL || 'https://rosync.vercel.app'}/share/${shareLink.id}`,
         expiresAt: shareLink.expiresAt
       }
     });
