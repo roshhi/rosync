@@ -4,6 +4,21 @@ import { useAuth } from '../hooks/useAuth';
 import { folderAPI } from '../services/folderAPI';
 import { fileAPI } from '../services/fileAPI';
 import { shareAPI } from '../services/shareAPI';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Animation variants
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 }
+  }
+};
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -417,12 +432,20 @@ const Dashboard = () => {
               <p className="text-[#818897] text-sm">Create your first folder to get started</p>
             </div>
           ) : (
-            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' : 'space-y-3'}>
+            <motion.div 
+            className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4' : 'space-y-3'}
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            key={currentFolderId}
+          >
               {folders.map((folder) => (
-              <div
+              <motion.div
                 key={folder.id}
+                variants={fadeInUp}
                 onDoubleClick={() => handleNavigateToFolder(folder)}
                 className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-5 hover:border-[#29C762]/50 transition-all duration-200 group cursor-pointer"
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
@@ -469,9 +492,9 @@ const Dashboard = () => {
                     Delete
                   </button>
                 </div>
-              </div>
+              </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
         </div>
 
@@ -488,11 +511,19 @@ const Dashboard = () => {
               <p className="text-[#818897]">No files in this folder</p>
             </div>
           ) : (
-            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4' : 'space-y-3'}>
+            <motion.div 
+            className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4' : 'space-y-3'}
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            key={currentFolderId + '-files'}
+          >
               {files.map((file) => (
-              <div
+              <motion.div
                 key={file.id}
+                variants={fadeInUp}
                 className="backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-4 hover:border-[#29C762]/50 transition-all duration-200"
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2 bg-blue-500/10 rounded-lg">
@@ -519,9 +550,9 @@ const Dashboard = () => {
                     Delete
                   </button>
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
       </div>
@@ -768,11 +799,25 @@ const Dashboard = () => {
   );
 };
 
-// Modal Component
+// Modal Component with animation
 const Modal = ({ title, children, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="backdrop-blur-md bg-[#0B0B0F] border border-white/10 rounded-2xl p-6 max-w-md w-full">
+    <motion.div 
+      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      onClick={onClose}
+    >
+      <motion.div 
+        className="backdrop-blur-md bg-[#0B0B0F] border border-white/10 rounded-2xl p-6 max-w-md w-full"
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 30, scale: 0.95 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-xl font-bold text-[#FFFFFF]">{title}</h3>
           <button
@@ -785,8 +830,8 @@ const Modal = ({ title, children, onClose }) => {
           </button>
         </div>
         {children}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

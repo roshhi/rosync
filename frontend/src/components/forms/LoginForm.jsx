@@ -3,6 +3,33 @@ import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { authAPI } from '../../services/authAPI';
 import { useAuth } from '../../hooks/useAuth';
 import Loader from '../ui/Loader';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Simple fade-in animation variants
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" }
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: { duration: 0.3, ease: "easeIn" }
+  }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    }
+  }
+};
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -47,15 +74,30 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="h-fit bg-[#0B0B0F] flex items-center justify-center px-4  mt-47.5 pb-8 overflow-y-auto">
-      <div className="w-full max-w-md my-auto">
+    <motion.div 
+      className="h-fit bg-[#0B0B0F] flex items-center justify-center px-4 mt-47.5 pb-8 overflow-y-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <motion.div 
+        className="w-full max-w-md my-auto"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+      >
         
-        <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-3xl p-8">
-            <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-[#FFFFFF] mb-2">Welcome Back</h1>
-                <p className="text-[#818897]">Sign in to continue to Rosync</p>
-            </div>
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <motion.div 
+          className="backdrop-blur-md bg-white/5 border border-white/10 rounded-3xl p-8"
+          variants={fadeIn}
+        >
+          <motion.div className="text-center mb-8" variants={fadeIn}>
+            <h1 className="text-3xl font-bold text-[#FFFFFF] mb-2">Welcome Back</h1>
+            <p className="text-[#818897]">Sign in to continue to Rosync</p>
+          </motion.div>
+          
+          <motion.form onSubmit={handleSubmit} className="space-y-6" variants={fadeIn}>
             <div>
               <label className="block text-sm font-medium text-[#C3C2C4] mb-2">
                 Email Address
@@ -105,11 +147,19 @@ const LoginForm = () => {
             </div>
 
             {/* Error Message */}
-            {error && (
-              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
-                <p className="text-red-400 text-sm">{error}</p>
-              </div>
-            )}
+            <AnimatePresence>
+              {error && (
+                <motion.div 
+                  className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <p className="text-red-400 text-sm">{error}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <button
               type="submit"
@@ -118,16 +168,17 @@ const LoginForm = () => {
             >
               {loading ? 'Signing In...' : 'Sign In'}
             </button>
-          </form>
-            <p className="text-center mt-6 text-[#C3C2C4]">
-                Don't have an account?{' '}
-                <Link to="/signup" className="text-[#29C762] font-medium hover:underline">
-                    Sign Up
-                </Link>
-            </p>
-        </div>
-      </div>
-    </div>
+          </motion.form>
+          
+          <motion.p className="text-center mt-6 text-[#C3C2C4]" variants={fadeIn}>
+            Don't have an account?{' '}
+            <Link to="/signup" className="text-[#29C762] font-medium hover:underline">
+              Sign Up
+            </Link>
+          </motion.p>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 

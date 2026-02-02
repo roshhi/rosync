@@ -3,6 +3,33 @@ import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { authAPI } from '../../services/authAPI';
 import { useAuth } from '../../hooks/useAuth';
 import Loader from '../ui/Loader';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Simple fade-in animation variants
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" }
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: { duration: 0.3, ease: "easeIn" }
+  }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1,
+    }
+  }
+};
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -56,18 +83,30 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="h-fit bg-[#0B0B0F] flex items-center justify-center px-4 pb-8 mt-37.5 overflow-y-auto">
-      <div className="w-full max-w-md my-auto mt-10">
-        {/* Header */}
-      
-
+    <motion.div 
+      className="h-fit bg-[#0B0B0F] flex items-center justify-center px-4 pb-8 mt-37.5 overflow-y-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <motion.div 
+        className="w-full max-w-md my-auto mt-10"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+      >
         {/* Form Card */}
-        <div className="backdrop-blur-md bg-white/5 border border-white/10 rounded-3xl p-8">
-          <div className="text-center mb-8">
+        <motion.div 
+          className="backdrop-blur-md bg-white/5 border border-white/10 rounded-3xl p-8"
+          variants={fadeIn}
+        >
+          <motion.div className="text-center mb-8" variants={fadeIn}>
             <h1 className="text-3xl font-bold text-[#FFFFFF] mb-2">Create Account</h1>
             <p className="text-[#818897]">Join Rosync and start syncing your files</p>
-          </div>
-          <form onSubmit={handleSubmit} className="space-y-5">
+          </motion.div>
+          
+          <motion.form onSubmit={handleSubmit} className="space-y-5" variants={fadeIn}>
             {/* Name Field */}
             <div>
               <label className="block text-sm font-medium text-[#C3C2C4] mb-2">
@@ -169,11 +208,19 @@ const SignupForm = () => {
             </div>
 
             {/* Error Message */}
-            {error && (
-              <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl">
-                <p className="text-red-400 text-sm">{error}</p>
-              </div>
-            )}
+            <AnimatePresence>
+              {error && (
+                <motion.div 
+                  className="p-3 bg-red-500/10 border border-red-500/20 rounded-xl"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <p className="text-red-400 text-sm">{error}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Submit Button */}
             <button
@@ -183,17 +230,18 @@ const SignupForm = () => {
             >
               {loading ? 'Creating Account...' : 'Create Account'}
             </button>
-          </form>
-          <p className="text-center mt-6 text-[#C3C2C4]">
+          </motion.form>
+          
+          <motion.p className="text-center mt-6 text-[#C3C2C4]" variants={fadeIn}>
             Already have an account?{' '}
             <Link to="/login" className="text-[#29C762] font-medium hover:underline">
               Sign In
             </Link>
-          </p>
+          </motion.p>
   
-        </div>
-      </div>
-    </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 
