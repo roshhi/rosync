@@ -7,14 +7,15 @@ import shareRoutes from './routes/shareRoutes.js';
 import cookieParser from 'cookie-parser';
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-
+// CORS must be first
 app.use(cors({
   origin: 'https://rosync.vercel.app',
   credentials: true
 }));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use('/', indexRouter);
 app.use('/api', folderRoutes);

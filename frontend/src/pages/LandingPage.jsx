@@ -1,6 +1,5 @@
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import Loader from '../components/ui/Loader';
 import { motion } from 'framer-motion';
 
 const features = [
@@ -68,13 +67,8 @@ const fadeInUp = {
 const LandingPage = () => {
   const { isAuthenticated, loading } = useAuth();
 
-  // Show loader while checking auth
-  if (loading) {
-    return <Loader />;
-  }
-
-  // Redirect to dashboard if already logged in
-  if (isAuthenticated) {
+  // Redirect to dashboard if already logged in (only after auth check completes)
+  if (!loading && isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
 
