@@ -14,18 +14,26 @@ A modern, secure file management platform that allows users to upload, organize,
 
 ---
 
-## ✨ Features
+## Features
 
-- **📤 File Upload** - Upload files up to 50MB with real-time progress tracking
-- **📁 Folder Management** - Create, rename, and delete folders with nested structure support
-- **🔗 Secure Sharing** - Generate expirable share links (1, 7, or 30 days)
-- **🔐 Authentication** - Secure JWT-based authentication with HTTP-only cookies
-- **📊 Storage Tracking** - Real-time storage usage monitoring
-- **🎨 Modern UI** - Beautiful dark theme with smooth Framer Motion animations
+- **File Upload** - Upload files up to 50MB with real-time progress tracking
+- **Folder Management** - Create, rename, and delete folders with nested structure support
+- **Secure Sharing** - Generate expirable share links (1, 7, or 30 days)
+- **Authentication** - Secure JWT-based authentication with HTTP-only cookies
+- **Storage Tracking** - Real-time storage usage monitoring
+- **Modern UI** - Beautiful dark theme with smooth Framer Motion animations
 
 ---
 
-## 🛠️ Tech Stack
+## UI Screenshots
+
+<img width="1920" height="1243" alt="Screenshot 2026-02-03 at 6 49 49 AM" src="https://github.com/user-attachments/assets/20589a1b-c47e-4fc8-a98c-98e33a1ed066" />
+
+<img width="1920" height="1243" alt="Screenshot 2026-02-03 at 6 54 02 AM" src="https://github.com/user-attachments/assets/2c441101-47d5-433a-938a-e45ef7516dd7" />
+
+---
+
+## Tech Stack
 
 ### Frontend
 | Technology | Purpose |
@@ -49,7 +57,7 @@ A modern, secure file management platform that allows users to upload, organize,
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 rosync/
@@ -73,7 +81,7 @@ rosync/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -131,7 +139,7 @@ The app will be available at `http://localhost:5173`
 
 ---
 
-## 🔗 How File Sharing Works
+## How File Sharing Works
 
 Rosync implements a secure, time-limited file sharing system:
 
@@ -177,7 +185,7 @@ Rosync implements a secure, time-limited file sharing system:
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Authentication
 | Method | Endpoint | Description |
@@ -209,7 +217,7 @@ Rosync implements a secure, time-limited file sharing system:
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
 ```prisma
 model User {
@@ -249,17 +257,7 @@ model ShareLink {
 
 ---
 
-## 🎨 UI Screenshots
-
-The application features a modern dark theme with:
-- Glassmorphism design elements
-- Smooth page transitions and micro-animations
-- Responsive layout for all screen sizes
-- Intuitive file/folder cards with hover effects
-
----
-
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
