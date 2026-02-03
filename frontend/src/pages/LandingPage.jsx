@@ -1,6 +1,6 @@
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import Loader from '../components/ui/Loader';
+import { motion } from 'framer-motion';
 
 const features = [
   {
@@ -35,15 +35,42 @@ const features = [
   },
 ];
 
+// Simple fade-in animation variants
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" }
+  }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+    }
+  }
+};
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.1, ease: "easeOut" }
+  }
+};
+
 const LandingPage = () => {
   const { isAuthenticated, loading } = useAuth();
 
-  // Show loader while checking auth
   if (loading) {
     return <Loader />;
   }
-
-  // Redirect to dashboard if already logged in
+  
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
@@ -52,42 +79,64 @@ const LandingPage = () => {
     <div className="h-fit bg-[#0B0B0F] px-6 mt-40">
       <div className="max-w-6xl mx-auto">
         
-        <section className="text-center py-16">
-          <h1 className="text-6xl md:text-6xl font-bold text-[#FFFFFF] leading-tight mb-6">
+        <motion.section 
+          className="text-center py-16"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
+          <motion.h1 
+            className="text-6xl md:text-6xl font-bold text-[#FFFFFF] leading-tight mb-6"
+            variants={fadeIn}
+          >
             The Modern Way to<br />
             <span className="text-[#29C762]">Upload & Share</span> Files
-          </h1>
-          <p className="text-[#C3C2C4] text-lg md:text-xl max-w-2xl mx-auto mb-10">
+          </motion.h1>
+          <motion.p 
+            className="text-[#C3C2C4] text-lg md:text-xl max-w-2xl mx-auto mb-10"
+            variants={fadeIn}
+          >
             Experience seamless file management with enterprise-grade security. 
             Upload, organize, and share your files with unprecedented ease.
-          </p>
+          </motion.p>
           
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <motion.div 
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            variants={fadeIn}
+          >
             <Link 
               to="/signup" 
               className="px-8 py-3.5 bg-[#29C762] text-[#0B0B0F] font-semibold rounded-xl hover:scale-105 transition-all duration-200"
             >
               Get Started
             </Link>
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
 
-        <section className="py-5">
+        <motion.section 
+          className="py-5"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={staggerContainer}
+        >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {features.map((feature) => (
-              <div 
+              <motion.div 
                 key={feature.id}
                 className="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-[50px] hover:border-[#29C762]/50 transition-all duration-300"
+                variants={fadeInUp}
+                whileHover={{ y: -5, transition: { duration: 0.1 } }}
               >
                 <div className="w-12 h-12 rounded-xl bg-[#29C762]/10 flex items-center justify-center mb-4">
                   {feature.icon}
                 </div>
                 <h3 className="text-[#FFFFFF] text-xl font-semibold mb-2">{feature.title}</h3>
                 <p className="text-[#818897] text-sm">{feature.description}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
       </div>
     </div>
