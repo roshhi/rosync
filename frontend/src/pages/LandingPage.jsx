@@ -1,6 +1,7 @@
 import { Link, Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { motion } from 'framer-motion';
+import Loader from '../components//ui/Loader';
 
 const features = [
   {
@@ -70,7 +71,7 @@ const LandingPage = () => {
   if (loading) {
     return <Loader />;
   }
-  
+
   if (isAuthenticated) {
     return <Navigate to="/dashboard" replace />;
   }
