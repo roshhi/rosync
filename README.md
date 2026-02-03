@@ -1,4 +1,4 @@
-# Rosync - Modern File Management Platform
+# Rosync - Personal Cloud Storage
 
 <div align="center">
   <img src="https://img.shields.io/badge/React-19.2-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React">
