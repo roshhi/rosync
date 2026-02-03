@@ -54,6 +54,7 @@ A modern, secure file management platform that allows users to upload, organize,
 | Cloudinary | File Storage |
 | JWT | Authentication |
 | bcrypt | Password Hashing |
+| Mutler Middleware | File Uploads |
 
 ---
 
